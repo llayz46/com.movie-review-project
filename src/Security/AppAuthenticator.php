@@ -46,6 +46,8 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
+        } else if ($request->getSession()->get('previousPage')) {
+            return new RedirectResponse($request->getSession()->get('previousPage'));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_home'));

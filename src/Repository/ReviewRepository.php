@@ -16,6 +16,17 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    public function findAverageNoteByMovieId(int $movieId): float|null
+    {
+        $query = $this->createQueryBuilder('r')
+            ->select('AVG(r.rate) as average')
+            ->where('r.movie = :movieId')
+            ->setParameter('movieId', $movieId)
+            ->getQuery();
+
+        return $query->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Review[] Returns an array of Review objects
 //     */

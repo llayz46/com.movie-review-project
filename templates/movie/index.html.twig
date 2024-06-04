@@ -3,6 +3,11 @@
 {% block title %}Hello MovieController!{% endblock %}
 
 {% block body %}
-    {% for movie in movies %}
-    {% endfor %}
+    <div class="container">
+        <div class="d-flex row text-center">
+            {% for movie in movies %}
+                {% include "partials/_movie.html.twig" %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

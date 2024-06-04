@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affiche de :
+	{{ movie.name }}
+{% endblock %}
+
+{% block body %}
+	<div class="container my-5">
+		<div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+			<div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+				<h1 class="display-4 fw-bold lh-1 text-body-emphasis">{{ movie.name|capitalize}}</h1>
+				<p class="lead">{{ movie.synopsis|raw }}</p>
+        <div class="row">
+          {% if movie.releaseDate %}
+            <p>Sortie le : {{ movie.releaseDate.format('d/m/Y') }}</p>
+          {% endif %}
+          <p>Durée : {{ movie.duration.format('H') }}h{{ movie.duration.format('i') }}</p>
+        </div>
+        <div class="col">
+        Genre : 
+          {% for genre in movie.genres %}
+            <a href="{{ path('app_movie', {'genreId': genre.id}) }}">
+              {{ genre.name }}
+            </a>
+          {% endfor %}
+        </div>
+        <div class="col">
+        Réalisateur : 
+          {% for director in movie.directors %}
+            {{ director.firstName }}
+            {{ director.lastName }}
+          {% endfor %}
+        </div>
+        <p>Note moyenne : {{ average }}</p>
+			</div>
+			<div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+				{% if movie.imageName %}
+					<img src="{{ vich_uploader_asset(movie, 'imageFile') }}" class="card-img-top" alt="Affiche de {{ movie.name }}" width="720">
+				{% else %}
+					<img src="{{ asset('build/images/default-movie.png') }}" class="card-img-top" alt="Affiche de {{ movie.name }}" width="720">
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+  <div class="container my-5">
+    {% if user %}
+      {% include "partials/_reviewForm.html.twig" %}
+    {% else %}
+      <div class="alert alert-info">
+        Vous devez être connecté pour laisser un avis.
+        <a href="{{ path('app_login') }}" class="alert-link">Se connecter</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
